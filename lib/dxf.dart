@@ -8,6 +8,7 @@ library dxf;
 import 'dart:convert';
 
 part 'src/datamodels/ac_db_arc.dart';
+part 'src/datamodels/ac_db_block.dart';
 part 'src/datamodels/ac_db_circle.dart';
 part 'src/datamodels/ac_db_ellipse.dart';
 part 'src/datamodels/ac_db_entity.dart';
