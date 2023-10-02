@@ -50,6 +50,10 @@ class GroupCode {
     return code == 0 && value.toString().toUpperCase() == value;
   }
 
+  bool get isBLOCK {
+    return code == 0 && value == 'BLOCK';
+  }
+
   bool get isAcDbCircle {
     return code == 0 && value.toString() == 'CIRCLE';
   }

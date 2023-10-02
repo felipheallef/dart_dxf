@@ -15,4 +15,8 @@ class BlocksSection {
     _section._groupCodes.addAll(codes);
     return _section;
   }
+
+  void _addBlock(AcDbBlock block) {
+    _groupCodes.addAll(block._groupCodes);
+  }
 }

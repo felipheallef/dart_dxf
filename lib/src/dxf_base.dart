@@ -39,6 +39,11 @@ class DXF {
   /// Get all entities
   List<AcDbEntity> get entities => _entitiesSection.entities;
 
+  /// Add blocks to the DXF object
+  void addBlock(AcDbBlock block) {
+    _blocksSection._addBlock(block);
+  }
+  
   /// Create a DXF object
   factory DXF.create() {
     var _dxf = DXF._init();
