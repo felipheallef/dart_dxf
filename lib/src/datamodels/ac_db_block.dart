@@ -11,9 +11,9 @@ class BlockFlag {
   static final referencedXRef = 64;
 }
 
-/// ARC (DXF)
+/// Block (DXF)
 ///
-/// Subclass marker (AcDbArc)
+/// Subclass marker (AcDbBlock)
 class AcDbBlock implements AcDbEntity {
   AcDbBlock._init();
 
@@ -210,4 +210,7 @@ class AcDbBlock implements AcDbEntity {
     }
     return _acDbEntity;
   }
+
+  factory AcDbBlock.fromGroupCodes(List<GroupCode> codes) =
+      AcDbBlock._fromGroupCodes;
 }

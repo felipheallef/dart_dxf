@@ -85,6 +85,15 @@ class AcDbLine implements AcDbEntity {
     result.value = value;
   }
 
+  double _thickness = 0;
+  double get thickness => _thickness;
+
+  set thickness(double value) {
+    final result = _groupCodes.firstWhere((element) => element.code == 39);
+    _thickness = value;
+    result.value = value;
+  }
+
   factory AcDbLine._fromGroupCodes(List<GroupCode> codes) {
     var _acDbEntity = AcDbLine._init();
     _acDbEntity._groupCodes.addAll(codes);
@@ -119,6 +128,7 @@ class AcDbLine implements AcDbEntity {
     double x1 = 0,
     double y1 = 0,
     double z1 = 0,
+    double thickness = 0,
     String layerName = '0',
   })  : _x = x,
         _y = y,
@@ -126,6 +136,7 @@ class AcDbLine implements AcDbEntity {
         _x1 = x1,
         _y1 = y1,
         _z1 = z1,
+        _thickness = thickness,
         _layerName = layerName {
     _groupCodes.add(GroupCode(0, type));
     _groupCodes.add(GroupCode(5, handle));
@@ -133,6 +144,7 @@ class AcDbLine implements AcDbEntity {
     _groupCodes.add(GroupCode(100, 'AcDbEntity'));
     _groupCodes.add(GroupCode(8, layerName));
     _groupCodes.add(GroupCode(100, 'AcDbLine'));
+    _groupCodes.add(GroupCode(39, thickness));
     _groupCodes.add(GroupCode(10, x));
     _groupCodes.add(GroupCode(20, y));
     _groupCodes.add(GroupCode(30, z));

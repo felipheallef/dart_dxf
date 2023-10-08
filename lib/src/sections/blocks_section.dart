@@ -17,6 +17,8 @@ class BlocksSection {
   }
 
   void _addBlock(AcDbBlock block) {
-    _groupCodes.addAll(block._groupCodes);
+    _groupCodes.insertAll(
+        _groupCodes.indexWhere((e) => e.code == 0 && e.value == 'ENDSEC'),
+        block._groupCodes);
   }
 }

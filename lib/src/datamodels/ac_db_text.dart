@@ -77,6 +77,20 @@ class AcDbText implements AcDbEntity {
     result.value = value;
   }
 
+  double _rotation = 0;
+
+  double get rotation => _rotation;
+
+  set rotation(double value) {
+    _rotation = value;
+    setTagValue(50, value);
+  }
+
+  void setTagValue<T>(int code, T value) {
+    final result = _groupCodes.firstWhere((e) => e.code == code);
+    result.value = value;
+  }
+
   factory AcDbText._fromGroupCodes(List<GroupCode> codes) {
     final _acDbEntity = AcDbText._init();
     _acDbEntity._groupCodes.addAll(codes);
@@ -105,12 +119,14 @@ class AcDbText implements AcDbEntity {
     double x = 0,
     double y = 0,
     double z = 0,
+    double rotation = 0,
     String textString = '',
     double textHeight = 2.5,
     String layerName = '0',
   })  : _x = x,
         _y = y,
         _z = z,
+        _rotation = rotation,
         _textString = textString,
         _textHeight = textHeight,
         _layerName = layerName {
@@ -120,6 +136,7 @@ class AcDbText implements AcDbEntity {
     _groupCodes.add(GroupCode(100, 'AcDbEntity'));
     _groupCodes.add(GroupCode(8, layerName));
     _groupCodes.add(GroupCode(100, 'AcDbText'));
+    _groupCodes.add(GroupCode(50, rotation));
     _groupCodes.add(GroupCode(10, x));
     _groupCodes.add(GroupCode(20, y));
     _groupCodes.add(GroupCode(30, z));
