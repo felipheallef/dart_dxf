@@ -37,32 +37,32 @@ class AcDbText implements AcDbEntity {
     result.value = value;
   }
 
-  double _x = 0;
-  double get x => _x;
-  set x(double value) {
-    final result = _groupCodes.firstWhere((element) => element.code == 10);
-    _x = value;
-    result.value = value;
+  Point3D _firstAlignmentPoint = Point3D.zero;
+
+  Point3D get firstAlignmentPoint => _firstAlignmentPoint;
+
+  set firstAlignmentPoint(Point3D value) {
+    _firstAlignmentPoint = value;
+    setTagValue(10, value.x);
+    setTagValue(20, value.y);
+    setTagValue(30, value.z);
   }
 
-  double _y = 0;
-  double get y => _y;
-  set y(double value) {
-    final result = _groupCodes.firstWhere((element) => element.code == 20);
-    _y = value;
-    result.value = value;
-  }
+  Point3D? _secondAlignmentPoint = null;
 
-  double _z = 0;
-  double get z => _z;
-  set z(double value) {
-    final result = _groupCodes.firstWhere((element) => element.code == 30);
-    _z = value;
-    result.value = value;
+  Point3D? get secondAlignmentPoint => _firstAlignmentPoint;
+
+  set secondAlignmentPoint(Point3D? value) {
+    _secondAlignmentPoint = value;
+    setTagValue(11, value?.x);
+    setTagValue(21, value?.y);
+    setTagValue(31, value?.z);
   }
 
   String _textString = 'Title';
+
   String get textString => _textString;
+
   set textString(String value) {
     final result = _groupCodes.firstWhere((element) => element.code == 1);
     _textString = value;
@@ -70,7 +70,9 @@ class AcDbText implements AcDbEntity {
   }
 
   double _textHeight = 2.5;
+
   double get textHeight => _textHeight;
+
   set textHeight(double value) {
     final result = _groupCodes.firstWhere((element) => element.code == 40);
     _textHeight = value;
@@ -86,6 +88,16 @@ class AcDbText implements AcDbEntity {
     setTagValue(50, value);
   }
 
+  TextAlignment _alignment = TextAlignment.left;
+
+  TextAlignment get alignment => _alignment;
+
+  set alignment(TextAlignment value) {
+    _alignment = value;
+    setTagValue(72, value.horizontal);
+    setTagValue(73, value.vertical);
+  }
+
   void setTagValue<T>(int code, T value) {
     final result = _groupCodes.firstWhere((e) => e.code == code);
     result.value = value;
@@ -98,11 +110,13 @@ class AcDbText implements AcDbEntity {
       var result = codes.firstWhere((element) => element.code == 5);
       _acDbEntity._handle = result.value;
       result = codes.firstWhere((element) => element.code == 10);
-      _acDbEntity._x = double.parse(result.value);
+      final x = double.parse(result.value);
       result = codes.firstWhere((element) => element.code == 20);
-      _acDbEntity._y = double.parse(result.value);
+      final y = double.parse(result.value);
       result = codes.firstWhere((element) => element.code == 30);
-      _acDbEntity._z = double.parse(result.value);
+      final z = double.parse(result.value);
+
+      _acDbEntity._firstAlignmentPoint = Point3D(x, y, z);
       result = codes.firstWhere((element) => element.code == 1);
       _acDbEntity._textString = result.value;
       result = codes.firstWhere((element) => element.code == 40);
@@ -116,16 +130,18 @@ class AcDbText implements AcDbEntity {
   }
 
   AcDbText({
-    double x = 0,
+    Point3D firstAlignmentPoint = Point3D.zero,
+    Point3D? secondAlignmentPoint,
     double y = 0,
     double z = 0,
     double rotation = 0,
     String textString = '',
     double textHeight = 2.5,
+    TextAlignment alignment = TextAlignment.left,
     String layerName = '0',
-  })  : _x = x,
-        _y = y,
-        _z = z,
+  })  : _firstAlignmentPoint = firstAlignmentPoint,
+        _secondAlignmentPoint = secondAlignmentPoint,
+        _alignment = alignment,
         _rotation = rotation,
         _textString = textString,
         _textHeight = textHeight,
@@ -136,12 +152,23 @@ class AcDbText implements AcDbEntity {
     _groupCodes.add(GroupCode(100, 'AcDbEntity'));
     _groupCodes.add(GroupCode(8, layerName));
     _groupCodes.add(GroupCode(100, 'AcDbText'));
-    _groupCodes.add(GroupCode(50, rotation));
-    _groupCodes.add(GroupCode(10, x));
-    _groupCodes.add(GroupCode(20, y));
-    _groupCodes.add(GroupCode(30, z));
+
+    // 39 = thickness
+    _groupCodes.add(GroupCode(10, firstAlignmentPoint.x));
+    _groupCodes.add(GroupCode(20, firstAlignmentPoint.y));
+    _groupCodes.add(GroupCode(30, firstAlignmentPoint.z));
     _groupCodes.add(GroupCode(40, textHeight));
     _groupCodes.add(GroupCode(1, textString));
+    _groupCodes.add(GroupCode(50, rotation));
+    // 41 = relativeXScaleFactor
+    // 51 = obliqueAngle
+    // 7 = styleName
+    // 71 = generationFlags
+    _groupCodes.add(GroupCode(72, alignment.horizontal));
+    _groupCodes.add(GroupCode(11, secondAlignmentPoint?.x));
+    _groupCodes.add(GroupCode(21, secondAlignmentPoint?.y));
+    _groupCodes.add(GroupCode(31, secondAlignmentPoint?.z));
     _groupCodes.add(GroupCode(100, 'AcDbText'));
+    _groupCodes.add(GroupCode(73, alignment.vertical));
   }
 }

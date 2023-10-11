@@ -67,24 +67,34 @@ void main() {
   var polyline = AcDbPolyline(vertices: vertices, isClosed: false);
   dxf.addEntities(polyline);
 
-  var text = AcDbText(
-    x: 14.2,
-    y: 16.7,
+  final text = AcDbText(
+    firstAlignmentPoint: Point2D(14.2, 16.7),
     textString: 'https://humg.edu.vn',
   );
+
   dxf.addEntities(text);
 
   // Load string from ASCII DXF file
   final dxf1 = DXF.fromString(dxf.dxfString);
-  var text1 = AcDbText(
-    x: 18.2,
-    y: 26.7,
+
+  final text1 = AcDbText(
+    firstAlignmentPoint: Point2D(18.2, 26.7),
     textString: 'DXF package',
   );
+
   dxf1.addEntities(text1);
 
-  var solid = AcDbSolid(
-      x: 3.2, y: 24.5, x1: 2.4, y1: 26.3, x2: 5.3, y2: 27.9, x3: 6.1, y3: 27.7);
+  final solid = AcDbSolid(
+    x: 3.2,
+    y: 24.5,
+    x1: 2.4,
+    y1: 26.3,
+    x2: 5.3,
+    y2: 27.9,
+    x3: 6.1,
+    y3: 27.7,
+  );
+
   dxf1.addEntities(solid);
   print(dxf1.dxfString);
 }

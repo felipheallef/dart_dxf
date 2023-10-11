@@ -37,22 +37,22 @@ class AcDbInsert implements AcDbEntity {
     result.value = value;
   }
 
-  Point _point = Point(0, 0, 0);
+  Point3D _point = Point3D(0, 0, 0);
 
-  Point get point => _point;
+  Point3D get point => _point;
 
-  set point(Point value) {
+  set point(Point3D value) {
     _point = value;
     setTagValue(10, value.x);
     setTagValue(20, value.y);
     setTagValue(30, value.z);
   }
 
-  Point _scale = Point(1, 1, 1);
+  Point3D _scale = Point3D(1, 1, 1);
 
-  Point get scale => _scale;
+  Point3D get scale => _scale;
 
-  set scale(Point value) {
+  set scale(Point3D value) {
     _scale = value;
     setTagValue(41, value.x);
     setTagValue(42, value.y);
@@ -84,8 +84,8 @@ class AcDbInsert implements AcDbEntity {
 
   /// Create AcDbInsert entity.
   AcDbInsert({
-    Point point = const Point(0, 0, 0),
-    Point scale = const Point(1, 1, 1),
+    Point3D point = const Point3D(0, 0, 0),
+    Point3D scale = const Point3D(1, 1, 1),
     String blockName = '',
     double rotation = 0.0,
     String layerName = '0',
@@ -124,13 +124,13 @@ class AcDbInsert implements AcDbEntity {
       final y = double.parse(codes.firstWhere((e) => e.code == 20).value);
       final z = double.parse(codes.firstWhere((e) => e.code == 30).value);
 
-      _acDbEntity._point = Point(x, y, z);
+      _acDbEntity._point = Point3D(x, y, z);
 
       final scaleX = double.parse(codes.firstWhere((e) => e.code == 41).value);
       final scaleY = double.parse(codes.firstWhere((e) => e.code == 42).value);
       final scaleZ = double.parse(codes.firstWhere((e) => e.code == 43).value);
 
-      _acDbEntity._scale = Point(scaleX, scaleY, scaleZ);
+      _acDbEntity._scale = Point3D(scaleX, scaleY, scaleZ);
 
       result = codes.firstWhere((e) => e.code == 2);
       _acDbEntity._blockName = result.value;

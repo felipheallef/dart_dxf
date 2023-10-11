@@ -86,17 +86,16 @@ Future<void> main() async {
       expect(dxf.getEntityByHandle('279').runtimeType, AcDbPolyline);
 
       var text = AcDbText(
-        x: 14.2,
-        y: 16.7,
+        firstAlignmentPoint: Point2D(14.2, 16.7),
         textString: 'https://humg.edu.vn',
       );
+
       dxf.addEntities(text);
       expect(text.handle, '27a');
       expect(dxf.getEntityByHandle('27a').runtimeType, AcDbText);
 
       var text1 = AcDbText(
-        x: 18.2,
-        y: 26.7,
+        firstAlignmentPoint: Point2D(18.2, 26.7),
         textString: 'DXF package',
       );
       dxf.addEntities(text1);
