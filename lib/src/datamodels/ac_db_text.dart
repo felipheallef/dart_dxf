@@ -37,6 +37,16 @@ class AcDbText implements AcDbEntity {
     result.value = value;
   }
 
+  String _styleName = 'STANDARD';
+
+  /// Text style name (optional, default = STANDARD)
+  String get styleName => _styleName;
+
+  set styleName(String value) {
+    _styleName = value;
+    setTagValue(7, value);
+  }
+
   Point3D _firstAlignmentPoint = Point3D.zero;
 
   Point3D get firstAlignmentPoint => _firstAlignmentPoint;
@@ -139,13 +149,15 @@ class AcDbText implements AcDbEntity {
     double textHeight = 2.5,
     TextAlignment alignment = TextAlignment.left,
     String layerName = '0',
+    String styleName = 'STANDARD',
   })  : _firstAlignmentPoint = firstAlignmentPoint,
         _secondAlignmentPoint = secondAlignmentPoint,
         _alignment = alignment,
         _rotation = rotation,
         _textString = textString,
         _textHeight = textHeight,
-        _layerName = layerName {
+        _layerName = layerName,
+        _styleName = styleName {
     _groupCodes.add(GroupCode(0, type));
     _groupCodes.add(GroupCode(5, handle));
     _groupCodes.add(GroupCode(330, '1F'));
@@ -163,6 +175,7 @@ class AcDbText implements AcDbEntity {
     // 41 = relativeXScaleFactor
     // 51 = obliqueAngle
     // 7 = styleName
+    _groupCodes.add(GroupCode(7, styleName));
     // 71 = generationFlags
     _groupCodes.add(GroupCode(72, alignment.horizontal));
     _groupCodes.add(GroupCode(11, secondAlignmentPoint?.x));
